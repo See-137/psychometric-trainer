@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSessionStore, useExamStore } from '../stores';
-import { Card, CardHeader, Button, CircularProgress } from '../components/common';
+import { Card, CardHeader, Button, CircularProgress, LoadingPage } from '../components/common';
+import { getSession, getAnswersBySession } from '../db';
+import type { Session, UserAnswer } from '../types';
 
 /**
  * Review page showing session results after completion
@@ -12,20 +14,64 @@ const ReviewPage: React.FC = () => {
   
   const { currentSession, answers, resetSession } = useSessionStore();
   const { getQuestion } = useExamStore();
+  
+  // Local state for session loaded from DB
+  const [loadedSession, setLoadedSession] = useState<Session | null>(null);
+  const [loadedAnswers, setLoadedAnswers] = useState<UserAnswer[]>([]);
+  
+  // Determine if we need to load from DB
+  const needsLoad = !currentSession && sessionId && !loadedSession;
 
-  // If no session, redirect to home
-  React.useEffect(() => {
-    if (!currentSession && !sessionId) {
-      navigate('/');
+  // Try to load session from DB if not in store
+  useEffect(() => {
+    if (needsLoad) {
+      let cancelled = false;
+      
+      Promise.all([
+        getSession(sessionId!),
+        getAnswersBySession(sessionId!)
+      ]).then(([session, sessionAnswers]) => {
+        if (cancelled) return;
+        
+        if (session) {
+          setLoadedSession(session);
+          setLoadedAnswers(sessionAnswers);
+        } else {
+          navigate('/');
+        }
+      }).catch(() => {
+        if (!cancelled) {
+          navigate('/');
+        }
+      });
+      
+      return () => {
+        cancelled = true;
+      };
     }
-  }, [currentSession, sessionId, navigate]);
+  }, [needsLoad, sessionId, navigate]);
 
-  if (!currentSession) {
+  // Use store data if available, otherwise use loaded data
+  const session = currentSession || loadedSession;
+  const answersList = currentSession 
+    ? Object.values(answers) 
+    : loadedAnswers;
+  
+  // Loading state - show while we're fetching from DB
+  if (needsLoad) {
+    return <LoadingPage message="טוען תוצאות..." />;
+  }
+
+  // If no session at all, redirect
+  if (!session && !sessionId) {
+    return null;
+  }
+  
+  if (!session) {
     return null;
   }
 
-  const score = currentSession.score;
-  const answersList = Object.values(answers);
+  const score = session.score;
 
   // Group answers by correctness
   const correctQuestions = answersList.filter(a => a.isCorrect);
@@ -62,7 +108,7 @@ const ReviewPage: React.FC = () => {
           {percentage >= 80 ? '🎉' : percentage >= 60 ? '👍' : '💪'}
         </div>
         <h1 className="text-2xl font-bold text-gray-900">
-          {currentSession.mode === 'training' ? 'סיום תרגול' : 'סיום סימולציה'}
+          {session.mode === 'training' ? 'סיום תרגול' : 'סיום סימולציה'}
         </h1>
         <p className="text-gray-600 mt-1">
           הנה הסיכום שלך

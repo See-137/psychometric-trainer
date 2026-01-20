@@ -1,6 +1,25 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { act, renderHook } from '@testing-library/react';
 import { useSessionStore } from '../stores/sessionStore';
+
+// Track bookmark state for mock
+let mockBookmarks = new Set<string>();
+
+// Mock the database functions
+vi.mock('../db', () => ({
+  saveAnswer: vi.fn().mockResolvedValue('answer-id'),
+  saveSession: vi.fn().mockResolvedValue('session-id'),
+  toggleBookmark: vi.fn().mockImplementation(async (questionId: string) => {
+    if (mockBookmarks.has(questionId)) {
+      mockBookmarks.delete(questionId);
+      return false;
+    } else {
+      mockBookmarks.add(questionId);
+      return true;
+    }
+  }),
+  getBookmarkedQuestions: vi.fn().mockImplementation(async () => Array.from(mockBookmarks)),
+}));
 
 describe('Session Store', () => {
   beforeEach(() => {
@@ -9,6 +28,9 @@ describe('Session Store', () => {
     act(() => {
       getState().resetSession();
     });
+    // Reset mocks and bookmark state
+    vi.clearAllMocks();
+    mockBookmarks = new Set<string>();
   });
 
   it('initializes with null session', () => {
@@ -116,21 +138,21 @@ describe('Session Store', () => {
     expect(result.current.flaggedQuestions.has('q1')).toBe(false);
   });
 
-  it('toggles bookmark for questions', () => {
+  it('toggles bookmark for questions', async () => {
     const { result } = renderHook(() => useSessionStore());
 
     act(() => {
       result.current.startTrainingSession(['q1', 'q2'], ['section-1']);
     });
 
-    act(() => {
-      result.current.toggleBookmark('q1');
+    await act(async () => {
+      await result.current.toggleBookmark('q1');
     });
 
     expect(result.current.bookmarkedQuestions.has('q1')).toBe(true);
 
-    act(() => {
-      result.current.toggleBookmark('q1');
+    await act(async () => {
+      await result.current.toggleBookmark('q1');
     });
 
     expect(result.current.bookmarkedQuestions.has('q1')).toBe(false);

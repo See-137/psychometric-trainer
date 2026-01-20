@@ -1,7 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useExamStore } from '../stores';
+import React, { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useExamStore, useSessionStore } from '../stores';
 import { Card, Button, LoadingPage } from '../components/common';
+import type { Exam } from '../types';
 
 /**
  * Simulation selection page
@@ -9,6 +10,15 @@ import { Card, Button, LoadingPage } from '../components/common';
  */
 const SimulationPage: React.FC = () => {
   const { exams, isLoading } = useExamStore();
+  const { startSimulationSession } = useSessionStore();
+  const navigate = useNavigate();
+
+  const handleStartSimulation = useCallback((exam: Exam) => {
+    // Start the simulation session with the exam's sections
+    startSimulationSession(exam.id, exam.sections);
+    // Navigate to the session page
+    navigate('/session');
+  }, [startSimulationSession, navigate]);
 
   if (isLoading) {
     return <LoadingPage message="טוען מבחנים..." />;
@@ -44,7 +54,12 @@ const SimulationPage: React.FC = () => {
         {exams.length > 0 ? (
           <div className="grid gap-3">
             {exams.map(exam => (
-              <Card key={exam.id} variant="interactive">
+              <Card 
+                key={exam.id} 
+                variant="interactive" 
+                className="hover:border-primary hover:shadow-md transition-all cursor-pointer"
+                onClick={() => handleStartSimulation(exam)}
+              >
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-semibold text-gray-900">{exam.hebrewName}</h3>
@@ -56,9 +71,7 @@ const SimulationPage: React.FC = () => {
                       <span>{exam.sections.reduce((sum, s) => sum + s.timeLimitMinutes, 0)} דקות</span>
                     </div>
                   </div>
-                  <Link to={`/simulation/${exam.id}`}>
-                    <Button>התחלה</Button>
-                  </Link>
+                  <Button type="button">התחלה</Button>
                 </div>
               </Card>
             ))}

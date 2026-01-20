@@ -1,9 +1,10 @@
 import React, { useEffect, useCallback, useRef, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSessionStore, useExamStore, useProgressStore } from '../stores';
 import { SessionLayout, SessionHeader } from '../components/layout';
 import { QuestionDisplay, CompactNavigator } from '../components/question';
 import { Timer, LoadingPage } from '../components/common';
+import { getSession } from '../db';
 import type { SectionType, ScoreResult } from '../types';
 
 /**
@@ -11,11 +12,13 @@ import type { SectionType, ScoreResult } from '../types';
  */
 const SessionPage: React.FC = () => {
   const navigate = useNavigate();
+  const { sessionId } = useParams<{ sessionId?: string }>();
   
   const { 
     currentSession, 
     answers, 
     flaggedQuestions,
+    bookmarkedQuestions,
     isPaused,
     showExplanation,
     sectionTimeRemaining,
@@ -29,13 +32,28 @@ const SessionPage: React.FC = () => {
     setTimeRemaining,
     completeSession,
     abandonSession,
+    loadSession,
   } = useSessionStore();
   
-  const { getQuestion } = useExamStore();
+  const { getQuestion, getSection } = useExamStore();
   const { updateProgress } = useProgressStore();
 
   // Refs for tracking timing
   const questionStartTimeRef = useRef<number>(0);
+  
+  // Load session from DB if sessionId is provided but no currentSession
+  useEffect(() => {
+    if (sessionId && !currentSession) {
+      getSession(sessionId).then((session) => {
+        if (session && session.status === 'in-progress') {
+          loadSession(session);
+        } else {
+          // Session not found or already completed, go home
+          navigate('/');
+        }
+      });
+    }
+  }, [sessionId, currentSession, loadSession, navigate]);
   
   // Current question ID
   const currentQuestionId = currentSession?.questionIds[currentSession?.currentQuestionIndex ?? 0];
@@ -93,16 +111,13 @@ const SessionPage: React.FC = () => {
     // Update progress stats
     const answerArray = Object.values(answers);
     if (answerArray.length > 0) {
-      // Get section type from first question (simplified - should group by section)
+      // Get section type from the section's actual type field
       const firstQuestionId = currentSession.questionIds[0];
       const firstQuestion = getQuestion(firstQuestionId);
       if (firstQuestion) {
-        // Determine section type from question ID (simplified logic)
-        const sectionType: SectionType = firstQuestion.sectionId.includes('quantitative') 
-          ? 'quantitative' 
-          : firstQuestion.sectionId.includes('english') 
-            ? 'english' 
-            : 'verbal';
+        // Use the section's type field directly
+        const section = getSection(firstQuestion.sectionId);
+        const sectionType: SectionType = section?.type || 'verbal';
         
         await updateProgress(
           currentSession.examId || 'training',
@@ -114,7 +129,7 @@ const SessionPage: React.FC = () => {
     
     // Navigate to review
     navigate(`/review/${currentSession.id}`);
-  }, [currentSession, answers, completeSession, updateProgress, getQuestion, navigate]);
+  }, [currentSession, answers, completeSession, updateProgress, getQuestion, getSection, navigate]);
 
   // Handle answer selection
   const handleSelectAnswer = useCallback(async (answer: string) => {
@@ -212,6 +227,16 @@ const SessionPage: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedAnswer, showExplanation, currentSession, handleNext, handlePrevious, togglePause]);
 
+  // Redirect to home if no session exists
+  useEffect(() => {
+    if (!currentSession) {
+      const timeout = setTimeout(() => {
+        navigate('/');
+      }, 1000);
+      return () => clearTimeout(timeout);
+    }
+  }, [currentSession, navigate]);
+
   // Loading state
   if (!currentSession || !currentQuestion) {
     return <LoadingPage message="טוען שאלות..." />;
@@ -270,6 +295,7 @@ const SessionPage: React.FC = () => {
             <h2 className="text-2xl font-bold mb-2">המבחן מושהה</h2>
             <p className="text-gray-300 mb-6">לחצי על Space או על כפתור ההפעלה להמשך</p>
             <button
+              type="button"
               onClick={togglePause}
               className="px-6 py-3 bg-white text-gray-900 rounded-lg font-medium hover:bg-gray-100 transition-colors"
             >
@@ -289,6 +315,7 @@ const SessionPage: React.FC = () => {
           onToggleFlag={() => toggleFlag(currentQuestion.id)}
           onToggleBookmark={() => toggleBookmark(currentQuestion.id)}
           isFlagged={flaggedQuestions.has(currentQuestion.id)}
+          isBookmarked={bookmarkedQuestions.has(currentQuestion.id)}
           questionNumber={currentIndex + 1}
           totalQuestions={totalQuestions}
         />
@@ -298,6 +325,7 @@ const SessionPage: React.FC = () => {
           <div className="mt-4 space-y-3">
             {!showExplanation && currentQuestion.explanation && (
               <button
+                type="button"
                 onClick={() => setShowExplanation(true)}
                 className="w-full py-3 text-primary font-medium hover:bg-primary/5 rounded-lg transition-colors"
               >
@@ -306,6 +334,7 @@ const SessionPage: React.FC = () => {
             )}
             
             <button
+              type="button"
               onClick={handleNext}
               className="w-full py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors"
             >

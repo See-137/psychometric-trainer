@@ -22,6 +22,7 @@ const TrainingPage: React.FC = () => {
   );
   const [selectedTypes, setSelectedTypes] = useState<QuestionType[]>([]);
   const [questionCount, setQuestionCount] = useState(10);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const sectionLabels: Record<SectionType, string> = {
     verbal: 'חשיבה מילולית',
@@ -93,7 +94,9 @@ const TrainingPage: React.FC = () => {
     const selected = shuffled.slice(0, questionCount);
     
     if (selected.length === 0) {
-      alert('לא נמצאו שאלות מתאימות');
+      setErrorMessage('לא נמצאו שאלות מתאימות');
+      // Auto-dismiss after 3 seconds
+      setTimeout(() => setErrorMessage(null), 3000);
       return;
     }
 
@@ -115,6 +118,22 @@ const TrainingPage: React.FC = () => {
 
   return (
     <div className="p-4 space-y-6 max-w-4xl mx-auto">
+      {/* Error notification */}
+      {errorMessage && (
+        <div className="fixed top-4 left-4 right-4 z-50 mx-auto max-w-md">
+          <div className="bg-error/90 text-white px-4 py-3 rounded-lg shadow-lg flex items-center justify-between">
+            <span>{errorMessage}</span>
+            <button 
+              type="button"
+              onClick={() => setErrorMessage(null)}
+              className="text-white/80 hover:text-white"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
+      
       <div className="text-center py-2">
         <h1 className="text-xl font-bold text-gray-900">תרגול חופשי</h1>
         <p className="text-gray-600 text-sm mt-1">בחרי נושא והתחילי לתרגל</p>
@@ -127,6 +146,7 @@ const TrainingPage: React.FC = () => {
         <div className="grid gap-3">
           {(Object.keys(sectionLabels) as SectionType[]).map(section => (
             <button
+              type="button"
               key={section}
               onClick={() => {
                 setSelectedSection(section);
@@ -171,6 +191,7 @@ const TrainingPage: React.FC = () => {
             {availableTypes.map((type: QuestionType) => {
               return (
                 <button
+                  type="button"
                   key={type}
                   onClick={() => toggleType(type)}
                   className={`
@@ -196,6 +217,7 @@ const TrainingPage: React.FC = () => {
           <div className="flex items-center gap-3">
             {[5, 10, 15, 20, 30].map(count => (
               <button
+                type="button"
                 key={count}
                 onClick={() => setQuestionCount(count)}
                 disabled={count > availableCount}

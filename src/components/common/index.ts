@@ -6,3 +6,4 @@ export { Timer } from './Timer';
 export { ProgressBar, CircularProgress } from './ProgressBar';
 export { LoadingSpinner, LoadingPage, Skeleton, QuestionSkeleton } from './Loading';
 export { ErrorBoundary, withErrorBoundary } from './ErrorBoundary';
+export { OfflineIndicator } from './OfflineIndicator';

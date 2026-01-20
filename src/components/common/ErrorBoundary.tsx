@@ -82,12 +82,14 @@ export class ErrorBoundary extends Component<Props, State> {
 
             <div className="flex flex-col gap-3">
               <button
+                type="button"
                 onClick={this.handleRetry}
                 className="w-full bg-primary text-white py-3 px-6 rounded-lg font-medium hover:bg-primary/90 transition-colors"
               >
                 נסה שוב
               </button>
               <button
+                type="button"
                 onClick={() => window.location.href = '/'}
                 className="w-full bg-gray-100 text-gray-700 py-3 px-6 rounded-lg font-medium hover:bg-gray-200 transition-colors"
               >

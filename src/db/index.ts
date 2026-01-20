@@ -108,10 +108,58 @@ export async function initializeProgress(): Promise<UserProgress> {
     streakDays: 0,
     lastPracticeDate: new Date().toISOString(),
     examsCompleted: [],
+    bookmarkedQuestions: [],
   };
   
   await saveProgress(initial);
   return initial;
+}
+
+// Bookmarks
+export async function getBookmarkedQuestions(): Promise<string[]> {
+  const progress = await getProgress();
+  return progress?.bookmarkedQuestions || [];
+}
+
+export async function addBookmark(questionId: string): Promise<void> {
+  const progress = await getProgress();
+  if (!progress) return;
+  
+  const bookmarks = progress.bookmarkedQuestions || [];
+  if (!bookmarks.includes(questionId)) {
+    bookmarks.push(questionId);
+    await saveProgress({ ...progress, bookmarkedQuestions: bookmarks });
+  }
+}
+
+export async function removeBookmark(questionId: string): Promise<void> {
+  const progress = await getProgress();
+  if (!progress) return;
+  
+  const bookmarks = progress.bookmarkedQuestions || [];
+  const index = bookmarks.indexOf(questionId);
+  if (index > -1) {
+    bookmarks.splice(index, 1);
+    await saveProgress({ ...progress, bookmarkedQuestions: bookmarks });
+  }
+}
+
+export async function toggleBookmark(questionId: string): Promise<boolean> {
+  const progress = await getProgress();
+  if (!progress) return false;
+  
+  const bookmarks = progress.bookmarkedQuestions || [];
+  const index = bookmarks.indexOf(questionId);
+  
+  if (index > -1) {
+    bookmarks.splice(index, 1);
+    await saveProgress({ ...progress, bookmarkedQuestions: bookmarks });
+    return false; // Now unbookmarked
+  } else {
+    bookmarks.push(questionId);
+    await saveProgress({ ...progress, bookmarkedQuestions: bookmarks });
+    return true; // Now bookmarked
+  }
 }
 
 // Export for backup

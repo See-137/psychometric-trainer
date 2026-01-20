@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { RTLProvider, ErrorBoundary } from './components/common';
+import { RTLProvider, ErrorBoundary, OfflineIndicator } from './components/common';
 import { AppRouter } from './router';
 import { useExamStore } from './stores';
 import { initSentry } from './services/sentry';
@@ -32,6 +32,7 @@ function App() {
   return (
     <ErrorBoundary>
       <RTLProvider>
+        <OfflineIndicator />
         <AppRouter />
       </RTLProvider>
     </ErrorBoundary>

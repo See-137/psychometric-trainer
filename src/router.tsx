@@ -60,6 +60,15 @@ const router = createBrowserRouter([
   },
   {
     // Session page outside of main layout (no bottom nav)
+    path: 'session',
+    element: (
+      <LazyPage>
+        <SessionPage />
+      </LazyPage>
+    ),
+  },
+  {
+    // Session page with optional session ID (for resuming)
     path: 'session/:sessionId',
     element: (
       <LazyPage>

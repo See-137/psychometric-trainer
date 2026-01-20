@@ -133,26 +133,28 @@ const HomePage: React.FC = () => {
           <div className="grid gap-3 sm:grid-cols-3">
             {(Object.entries(sectionProgress) as [SectionType, typeof sectionProgress.verbal][]).map(
               ([type, progress]) => (
-                <Card key={type} padding="md">
-                  <div className="flex items-center gap-4">
-                    <CircularProgress
-                      value={progress.accuracy * 100}
-                      size={60}
-                      strokeWidth={6}
-                      variant={sectionColors[type]}
-                      showLabel={false}
-                    />
-                    <div>
-                      <h3 className="font-medium text-gray-900">{sectionLabels[type]}</h3>
-                      <p className="text-sm text-gray-500">
-                        {Math.round(progress.accuracy * 100)}% דיוק
-                      </p>
-                      <p className="text-xs text-gray-400">
-                        {progress.totalQuestions} שאלות
-                      </p>
+                <Link key={type} to={`/training?section=${type}`}>
+                  <Card padding="md" variant="interactive">
+                    <div className="flex items-center gap-4">
+                      <CircularProgress
+                        value={progress.accuracy * 100}
+                        size={60}
+                        strokeWidth={6}
+                        variant={sectionColors[type]}
+                        showLabel={false}
+                      />
+                      <div>
+                        <h3 className="font-medium text-gray-900">{sectionLabels[type]}</h3>
+                        <p className="text-sm text-gray-500">
+                          {Math.round(progress.accuracy * 100)}% דיוק
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          {progress.totalQuestions} שאלות
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </Card>
+                  </Card>
+                </Link>
               )
             )}
           </div>

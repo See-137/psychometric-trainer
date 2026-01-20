@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { Session, Question, Section, UserAnswer, SessionState, ScoreResult } from '../types';
-import { saveAnswer, saveSession } from '../db';
+import { saveAnswer, saveSession, toggleBookmark as toggleBookmarkInDB, getBookmarkedQuestions } from '../db';
 
 interface SessionStore extends SessionState {
   // Actions
@@ -10,7 +10,7 @@ interface SessionStore extends SessionState {
   setCurrentSection: (section: Section | null) => void;
   answerQuestion: (questionId: string, answer: string, isCorrect: boolean, timeSpent: number) => Promise<void>;
   toggleFlag: (questionId: string) => void;
-  toggleBookmark: (questionId: string) => void;
+  toggleBookmark: (questionId: string) => Promise<void>;
   goToQuestion: (index: number) => void;
   nextQuestion: () => void;
   prevQuestion: () => void;
@@ -21,7 +21,8 @@ interface SessionStore extends SessionState {
   completeSession: (score?: ScoreResult) => Promise<void>;
   abandonSession: () => Promise<void>;
   resetSession: () => void;
-  loadSession: (session: Session) => void;
+  loadSession: (session: Session) => Promise<void>;
+  loadBookmarks: () => Promise<void>;
 }
 
 const generateId = () => crypto.randomUUID();
@@ -154,14 +155,17 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
     set({ flaggedQuestions: newFlagged });
   },
 
-  toggleBookmark: (questionId) => {
+  toggleBookmark: async (questionId) => {
     const { bookmarkedQuestions } = get();
     const newBookmarked = new Set(bookmarkedQuestions);
     
-    if (newBookmarked.has(questionId)) {
-      newBookmarked.delete(questionId);
-    } else {
+    // Toggle in DB and get new state
+    const isNowBookmarked = await toggleBookmarkInDB(questionId);
+    
+    if (isNowBookmarked) {
       newBookmarked.add(questionId);
+    } else {
+      newBookmarked.delete(questionId);
     }
     
     set({ bookmarkedQuestions: newBookmarked });
@@ -260,17 +264,29 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
   },
 
   resetSession: () => {
-    set(initialState);
+    // Keep bookmarked questions when resetting (they're persisted in DB)
+    const { bookmarkedQuestions } = get();
+    set({
+      ...initialState,
+      bookmarkedQuestions,
+    });
   },
 
-  loadSession: (session) => {
+  loadSession: async (session) => {
+    // Load persisted bookmarks from DB
+    const bookmarks = await getBookmarkedQuestions();
     set({
       currentSession: session,
       answers: {},
       flaggedQuestions: new Set(),
-      bookmarkedQuestions: new Set(),
+      bookmarkedQuestions: new Set(bookmarks),
       isPaused: false,
       showExplanation: false,
     });
+  },
+
+  loadBookmarks: async () => {
+    const bookmarks = await getBookmarkedQuestions();
+    set({ bookmarkedQuestions: new Set(bookmarks) });
   },
 }));

@@ -72,6 +72,7 @@ export const QuestionNavigator: React.FC<QuestionNavigatorProps> = ({
           
           return (
             <button
+              type="button"
               key={question.id}
               onClick={() => onNavigate(index)}
               className={getButtonClasses(state)}
@@ -150,6 +151,7 @@ export const CompactNavigator: React.FC<CompactNavigatorProps> = ({
       <div className="flex items-center justify-between">
         {/* Previous button */}
         <button
+          type="button"
           onClick={onPrevious}
           disabled={!canGoPrevious}
           className={`
@@ -165,6 +167,7 @@ export const CompactNavigator: React.FC<CompactNavigatorProps> = ({
 
         {/* Center status */}
         <button
+          type="button"
           onClick={onOpenFullNavigator}
           className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors"
         >
@@ -178,6 +181,7 @@ export const CompactNavigator: React.FC<CompactNavigatorProps> = ({
 
         {/* Next button */}
         <button
+          type="button"
           onClick={onNext}
           disabled={!canGoNext}
           className={`

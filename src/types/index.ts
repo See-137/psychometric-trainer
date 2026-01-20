@@ -138,6 +138,7 @@ export interface UserProgress {
     averageTime: number;
   }>;
   examsCompleted?: string[];           // Exam IDs
+  bookmarkedQuestions?: string[];      // Question IDs to practice later
 }
 
 export interface TypeStats {

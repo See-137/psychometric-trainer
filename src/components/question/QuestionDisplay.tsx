@@ -119,6 +119,7 @@ export const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
           {/* Flag button */}
           {onToggleFlag && (
             <button
+              type="button"
               onClick={onToggleFlag}
               className={`p-2 rounded-lg transition-colors ${
                 isFlagged
@@ -135,6 +136,7 @@ export const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
           {/* Bookmark button */}
           {onToggleBookmark && (
             <button
+              type="button"
               onClick={onToggleBookmark}
               className={`p-2 rounded-lg transition-colors ${
                 isBookmarked
@@ -186,8 +188,14 @@ export const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
 
           return (
             <button
+              type="button"
               key={index}
-              onClick={() => !showCorrectAnswer && onSelectAnswer(option.label)}
+              onClick={() => {
+                // Allow selection when answer isn't shown, or in review mode
+                if (!showCorrectAnswer || isReviewMode) {
+                  onSelectAnswer(option.label);
+                }
+              }}
               onMouseEnter={() => setHoveredOption(option.label)}
               onMouseLeave={() => setHoveredOption(null)}
               disabled={showCorrectAnswer && !isReviewMode}
