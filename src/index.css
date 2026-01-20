@@ -6,6 +6,7 @@
   --font-english: "Inter", "Arial", sans-serif;
   
   /* Primary colors - Blue for trust/education */
+  --color-primary: #3b82f6;
   --color-primary-50: #eff6ff;
   --color-primary-100: #dbeafe;
   --color-primary-200: #bfdbfe;
@@ -58,6 +59,32 @@
     direction: ltr;
     text-align: left;
     font-family: var(--font-english);
+  }
+  
+  /* Mixed content handling */
+  .mixed-content {
+    unicode-bidi: plaintext;
+    text-align: start;
+  }
+  
+  /* Mathematical expressions */
+  .math-expression {
+    font-family: "Times New Roman", serif;
+    unicode-bidi: isolate;
+    direction: ltr;
+    display: inline;
+  }
+  
+  /* Better Hebrew-English mixing */
+  .question-text {
+    line-height: 1.6;
+    word-spacing: 0.1em;
+  }
+  
+  /* Fix for inline mathematical content */
+  .inline-math {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
   }
   
   .math-content {

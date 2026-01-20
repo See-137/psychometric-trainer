@@ -12,7 +12,8 @@
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
     "deploy": "powershell -ExecutionPolicy Bypass -File ./deploy.ps1 -InvalidateCache",
-    "deploy:quick": "powershell -ExecutionPolicy Bypass -File ./deploy.ps1 -SkipBuild"
+    "deploy:quick": "powershell -ExecutionPolicy Bypass -File ./deploy.ps1 -SkipBuild",
+    "reconstruct-questions": "node scripts/reconstruct-questions.js"
   },
   "dependencies": {
     "@sentry/react": "^8.55.0",

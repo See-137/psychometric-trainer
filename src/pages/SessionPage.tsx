@@ -306,7 +306,7 @@ const SessionPage: React.FC = () => {
       )}
 
       {/* Question content */}
-      <div className="p-4 max-w-3xl mx-auto">
+      <div className="p-4 pb-8 max-w-3xl mx-auto">
         <QuestionDisplay
           question={currentQuestion}
           selectedAnswer={selectedAnswer}
@@ -322,12 +322,12 @@ const SessionPage: React.FC = () => {
 
         {/* Training mode: Show explanation toggle and next button */}
         {isTrainingMode && selectedAnswer && (
-          <div className="mt-4 space-y-3">
+          <div className="mt-6 mb-4 space-y-3">
             {!showExplanation && currentQuestion.explanation && (
               <button
                 type="button"
                 onClick={() => setShowExplanation(true)}
-                className="w-full py-3 text-primary font-medium hover:bg-primary/5 rounded-lg transition-colors"
+                className="w-full py-3 text-primary font-medium hover:bg-primary/5 rounded-lg transition-colors border border-primary/20"
               >
                 הצג הסבר
               </button>
@@ -336,7 +336,7 @@ const SessionPage: React.FC = () => {
             <button
               type="button"
               onClick={handleNext}
-              className="w-full py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors"
+              className="w-full py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors shadow-sm"
             >
               {currentIndex < totalQuestions - 1 ? 'לשאלה הבאה' : 'סיום תרגול'}
             </button>

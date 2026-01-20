@@ -153,8 +153,13 @@ export const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
       </div>
 
       {/* Question text */}
-      <div className="px-6 py-5">
-        <p className="text-lg text-gray-900 leading-relaxed whitespace-pre-wrap">
+      <div className="px-6 py-5" dir="auto">
+        <p className="text-lg text-gray-900 leading-relaxed whitespace-pre-wrap" 
+           style={{ 
+             unicodeBidi: 'plaintext', 
+             textAlign: 'start',
+             lineHeight: '1.6'
+           }}>
           {question.stem}
         </p>
 
@@ -171,8 +176,13 @@ export const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
 
         {/* Passage (for reading comprehension) */}
         {question.passage && (
-          <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
-            <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+          <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200" dir="auto">
+            <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap" 
+               style={{ 
+                 unicodeBidi: 'plaintext', 
+                 textAlign: 'start',
+                 lineHeight: '1.6'
+               }}>
               {question.passage}
             </p>
           </div>
@@ -222,7 +232,14 @@ export const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
                 </span>
 
                 {/* Option text */}
-                <span className="flex-1 text-gray-900 pt-1">{option.text}</span>
+                <span className="flex-1 text-gray-900 pt-1" 
+                      style={{ 
+                        unicodeBidi: 'plaintext', 
+                        textAlign: 'start',
+                        lineHeight: '1.5' 
+                      }}>
+                  {option.text}
+                </span>
 
                 {/* Keyboard shortcut hint */}
                 {hoveredOption === option.label && !showCorrectAnswer && (

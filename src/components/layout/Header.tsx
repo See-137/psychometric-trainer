@@ -154,14 +154,14 @@ export const SessionHeader: React.FC<SessionHeaderProps> = ({
       {/* Exit confirmation modal */}
       {showExitConfirm && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
           onClick={() => setShowExitConfirm(false)}
           role="dialog"
           aria-modal="true"
           aria-labelledby="exit-dialog-title"
         >
           <div 
-            className="bg-white rounded-xl p-6 max-w-sm w-full shadow-xl"
+            className="bg-white rounded-xl p-6 max-w-sm w-full shadow-2xl ring-1 ring-black/5"
             onClick={e => e.stopPropagation()}
           >
             <h2 id="exit-dialog-title" className="text-lg font-semibold text-gray-900 mb-2">
@@ -174,7 +174,7 @@ export const SessionHeader: React.FC<SessionHeaderProps> = ({
               <button
                 type="button"
                 onClick={() => setShowExitConfirm(false)}
-                className="flex-1 py-2.5 px-4 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                className="flex-1 py-3 px-4 rounded-lg border-2 border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 hover:border-gray-400 transition-colors"
               >
                 ביטול
               </button>
@@ -184,7 +184,7 @@ export const SessionHeader: React.FC<SessionHeaderProps> = ({
                   setShowExitConfirm(false);
                   onExit?.();
                 }}
-                className="flex-1 py-2.5 px-4 rounded-lg bg-error text-white font-medium hover:bg-error/90 transition-colors"
+                className="flex-1 py-3 px-4 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 transition-colors shadow-sm"
               >
                 יציאה
               </button>
