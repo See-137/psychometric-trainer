@@ -51,11 +51,12 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center gap-2">
           {showBackButton && (
             <button
+              type="button"
               onClick={handleBack}
               className="p-2 -m-2 rounded-lg hover:bg-gray-100 transition-colors"
               aria-label="חזור"
             >
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
             </button>
@@ -104,11 +105,12 @@ export const SessionHeader: React.FC<SessionHeaderProps> = ({
         <div className="flex items-center justify-between h-14 px-4 max-w-4xl mx-auto">
           {/* Exit button */}
           <button
+            type="button"
             onClick={() => setShowExitConfirm(true)}
             className="p-2 -m-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-error transition-colors"
             aria-label="יציאה"
           >
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -124,6 +126,7 @@ export const SessionHeader: React.FC<SessionHeaderProps> = ({
             
             {showPauseButton && onPause && (
               <button
+                type="button"
                 onClick={onPause}
                 className={`
                   p-2 rounded-lg transition-colors
@@ -134,11 +137,11 @@ export const SessionHeader: React.FC<SessionHeaderProps> = ({
                 aria-label={isPaused ? 'המשך' : 'השהה'}
               >
                 {isPaused ? (
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M8 5v14l11-7z" />
                   </svg>
                 ) : (
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
                   </svg>
                 )}
@@ -153,12 +156,15 @@ export const SessionHeader: React.FC<SessionHeaderProps> = ({
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
           onClick={() => setShowExitConfirm(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="exit-dialog-title"
         >
           <div 
             className="bg-white rounded-xl p-6 max-w-sm w-full shadow-xl"
             onClick={e => e.stopPropagation()}
           >
-            <h2 className="text-lg font-semibold text-gray-900 mb-2">
+            <h2 id="exit-dialog-title" className="text-lg font-semibold text-gray-900 mb-2">
               לצאת מהמבחן?
             </h2>
             <p className="text-gray-600 mb-6">
@@ -166,12 +172,14 @@ export const SessionHeader: React.FC<SessionHeaderProps> = ({
             </p>
             <div className="flex gap-3">
               <button
+                type="button"
                 onClick={() => setShowExitConfirm(false)}
                 className="flex-1 py-2.5 px-4 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors"
               >
                 ביטול
               </button>
               <button
+                type="button"
                 onClick={() => {
                   setShowExitConfirm(false);
                   onExit?.();
