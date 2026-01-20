@@ -155,10 +155,10 @@ export const CompactNavigator: React.FC<CompactNavigatorProps> = ({
           onClick={onPrevious}
           disabled={!canGoPrevious}
           className={`
-            flex items-center gap-1 px-3 py-2 rounded-lg transition-colors
+            flex items-center gap-1 px-4 py-2.5 rounded-lg transition-colors font-medium
             ${canGoPrevious 
-              ? 'text-gray-700 hover:bg-gray-100' 
-              : 'text-gray-300 cursor-not-allowed'}
+              ? 'text-primary bg-primary/5 hover:bg-primary/10 border border-primary/20' 
+              : 'text-gray-300 cursor-not-allowed bg-gray-50'}
           `}
         >
           <ChevronIcon direction="right" className="w-5 h-5" />
@@ -169,7 +169,7 @@ export const CompactNavigator: React.FC<CompactNavigatorProps> = ({
         <button
           type="button"
           onClick={onOpenFullNavigator}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-200"
         >
           <span className="font-medium">
             {currentIndex + 1} / {totalQuestions}
@@ -185,10 +185,10 @@ export const CompactNavigator: React.FC<CompactNavigatorProps> = ({
           onClick={onNext}
           disabled={!canGoNext}
           className={`
-            flex items-center gap-1 px-3 py-2 rounded-lg transition-colors
+            flex items-center gap-1 px-4 py-2.5 rounded-lg transition-colors font-medium shadow-sm
             ${canGoNext 
-              ? 'text-gray-700 hover:bg-gray-100' 
-              : 'text-gray-300 cursor-not-allowed'}
+              ? 'text-white bg-primary hover:bg-primary/90' 
+              : 'text-gray-300 cursor-not-allowed bg-gray-50'}
           `}
         >
           <span className="text-sm">הבאה</span>
