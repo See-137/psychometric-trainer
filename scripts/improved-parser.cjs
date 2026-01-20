@@ -194,31 +194,82 @@ function parseInlineHebrewOptions(line) {
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // HEBREW QUESTION EXTRACTION (Verbal & Quantitative)
+// Section order in Psychometric exam (must be respected for proper boundaries):
+// 1. חשיבה מילולית - פרק ראשון (Verbal 1)
+// 2. חשיבה מילולית - פרק שני (Verbal 2)
+// 3. חשיבה כמותית - פרק ראשון (Quantitative 1)
+// 4. חשיבה כמותית - פרק שני (Quantitative 2)
+// 5. אנגלית - פרק ראשון (English 1)
+// 6. אנגלית - פרק שני (English 2)
 // ═══════════════════════════════════════════════════════════════════════════════
+
+// Ordered list of section markers - MUST match exam order
+const SECTION_ORDER = [
+  'חשיבה מילולית - פרק ראשון',
+  'חשיבה מילולית - פרק שני',
+  'חשיבה כמותית - פרק ראשון',
+  'חשיבה כמותית - פרק שני',
+  'אנגלית - פרק ראשון',
+  'אנגלית - פרק שני',
+  'מפתח תשובות נכונות'
+];
+
+// Also check for garbled markers (common in PDF extraction)
+// The key is the canonical marker, values are variants to search for
+const SECTION_VARIANTS = {
+  'חשיבה מילולית - פרק ראשון': ['חשיבה מילולית - פרק ראשון'],
+  'חשיבה מילולית - פרק שני': ['חשיבה מילולית - פרק שני'],
+  'חשיבה כמותית - פרק ראשון': ['חשיבה כמותית - פרק ראשון', 'חשיבה Ăמותית - פרק ראשון'],
+  'חשיבה כמותית - פרק שני': ['חשיבה כמותית - פרק שני', 'חשיבה Ăמותית - פרק שני'],
+  'אנגלית - פרק ראשון': ['אנגלית - פרק ראשון'],
+  'אנגלית - פרק שני': ['אנגלית - פרק שני'],
+  'מפתח תשובות נכונות': ['מפתח תשובות נכונות'],
+};
+
+function findSectionMarker(text, marker, startFrom = 0) {
+  let minIdx = -1;
+  
+  // Try all variants for this marker and return the earliest match
+  const variants = SECTION_VARIANTS[marker] || [marker];
+  for (const variant of variants) {
+    const idx = text.indexOf(variant, startFrom);
+    if (idx !== -1 && (minIdx === -1 || idx < minIdx)) {
+      minIdx = idx;
+    }
+  }
+  
+  return minIdx;
+}
 
 function extractHebrewSection(examText, sectionMarker, sectionKey) {
   const questions = {};
   
-  // Find section boundaries
-  const sectionStart = examText.indexOf(sectionMarker);
+  // Find where THIS section starts (first occurrence after table of contents)
+  // Skip first 1000 chars to avoid TOC
+  const tocEnd = examText.indexOf('הזמן המוקצב', 1000);
+  const searchStart = tocEnd > 0 ? tocEnd : 1000;
+  
+  const sectionStart = findSectionMarker(examText, sectionMarker, searchStart);
   if (sectionStart === -1) return questions;
   
-  const nextSections = [
-    'חשיבה מילולית - פרק שני',
-    'חשיבה כמותית - פרק ראשון',
-    'חשיבה כמותית - פרק שני',
-    'אנגלית - פרק ראשון',
-    'אנגלית - פרק שני',
-    'מפתח תשובות נכונות',
-    'גיליון תשובות'
-  ].filter(s => s !== sectionMarker);
-  
+  // Find the NEXT section in order (not just any section marker)
+  const currentIdx = SECTION_ORDER.indexOf(sectionMarker);
   let sectionEnd = examText.length;
-  for (const next of nextSections) {
-    const idx = examText.indexOf(next, sectionStart + sectionMarker.length);
-    if (idx !== -1 && idx < sectionEnd) {
-      sectionEnd = idx;
+  
+  // Look for the next section in order
+  if (currentIdx >= 0 && currentIdx < SECTION_ORDER.length - 1) {
+    const nextMarker = SECTION_ORDER[currentIdx + 1];
+    // Find FIRST occurrence of next section marker after current section start
+    const nextIdx = findSectionMarker(examText, nextMarker, sectionStart + sectionMarker.length);
+    if (nextIdx !== -1) {
+      sectionEnd = nextIdx;
     }
+  }
+  
+  // Also check for answer key as final boundary
+  const answerKeyIdx = examText.indexOf('מפתח תשובות נכונות', sectionStart);
+  if (answerKeyIdx !== -1 && answerKeyIdx < sectionEnd) {
+    sectionEnd = answerKeyIdx;
   }
   
   const sectionText = examText.substring(sectionStart, sectionEnd);
@@ -383,18 +434,30 @@ function extractHebrewSection(examText, sectionMarker, sectionKey) {
 function extractEnglishSection(examText, sectionMarker, sectionKey) {
   const questions = {};
   
-  const sectionStart = examText.indexOf(sectionMarker);
+  // Skip first 1000 chars to avoid TOC
+  const tocEnd = examText.indexOf('הזמן המוקצב', 1000);
+  const searchStart = tocEnd > 0 ? tocEnd : 1000;
+  
+  const sectionStart = findSectionMarker(examText, sectionMarker, searchStart);
   if (sectionStart === -1) return questions;
   
-  let sectionEnd;
-  if (sectionKey === 'english-1') {
-    sectionEnd = examText.indexOf('אנגלית - פרק שני', sectionStart + 100);
-    if (sectionEnd === -1) sectionEnd = examText.indexOf('מפתח תשובות נכונות', sectionStart);
-  } else {
-    sectionEnd = examText.indexOf('מפתח תשובות נכונות', sectionStart);
+  // Find the NEXT section in order
+  const currentIdx = SECTION_ORDER.indexOf(sectionMarker);
+  let sectionEnd = examText.length;
+  
+  if (currentIdx >= 0 && currentIdx < SECTION_ORDER.length - 1) {
+    const nextMarker = SECTION_ORDER[currentIdx + 1];
+    const nextIdx = findSectionMarker(examText, nextMarker, sectionStart + sectionMarker.length);
+    if (nextIdx !== -1) {
+      sectionEnd = nextIdx;
+    }
   }
   
-  if (sectionEnd === -1) sectionEnd = examText.length;
+  // Also check for answer key as final boundary
+  const answerKeyIdx = examText.indexOf('מפתח תשובות נכונות', sectionStart);
+  if (answerKeyIdx !== -1 && answerKeyIdx < sectionEnd) {
+    sectionEnd = answerKeyIdx;
+  }
   
   const sectionText = examText.substring(sectionStart, sectionEnd);
   const lines = sectionText.split('\n');
