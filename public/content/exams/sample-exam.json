@@ -1,0 +1,294 @@
+{
+  "id": "sample-2025",
+  "season": "spring",
+  "year": 2025,
+  "hebrewName": "מבחן לדוגמה - אביב 2025",
+  "sections": [
+    {
+      "id": "sample-2025-quantitative-1",
+      "examId": "sample-2025",
+      "type": "quantitative",
+      "order": 1,
+      "timeLimitMinutes": 20,
+      "questions": [
+        {
+          "id": "sample-2025-q-1",
+          "sectionId": "sample-2025-quantitative-1",
+          "number": 1,
+          "type": "algebra",
+          "stem": "אם x + 5 = 12, מהו הערך של 2x?",
+          "options": [
+            { "label": "א", "text": "7" },
+            { "label": "ב", "text": "14" },
+            { "label": "ג", "text": "17" },
+            { "label": "ד", "text": "24" }
+          ],
+          "correctAnswer": "ב",
+          "explanation": "x + 5 = 12, לכן x = 7. ומכאן 2x = 14.",
+          "difficulty": "easy",
+          "tags": ["algebra", "equations"]
+        },
+        {
+          "id": "sample-2025-q-2",
+          "sectionId": "sample-2025-quantitative-1",
+          "number": 2,
+          "type": "algebra",
+          "stem": "מהו הערך של (3² + 4²)?",
+          "options": [
+            { "label": "א", "text": "7" },
+            { "label": "ב", "text": "12" },
+            { "label": "ג", "text": "25" },
+            { "label": "ד", "text": "49" }
+          ],
+          "correctAnswer": "ג",
+          "explanation": "3² = 9, 4² = 16, וביחד 9 + 16 = 25.",
+          "difficulty": "easy",
+          "tags": ["algebra", "powers"]
+        },
+        {
+          "id": "sample-2025-q-3",
+          "sectionId": "sample-2025-quantitative-1",
+          "number": 3,
+          "type": "geometry",
+          "stem": "שטח ריבוע הוא 64 סמ\"ר. מהו היקף הריבוע?",
+          "options": [
+            { "label": "א", "text": "16 ס\"מ" },
+            { "label": "ב", "text": "32 ס\"מ" },
+            { "label": "ג", "text": "64 ס\"מ" },
+            { "label": "ד", "text": "256 ס\"מ" }
+          ],
+          "correctAnswer": "ב",
+          "explanation": "שטח ריבוע = צלע². אם השטח 64, אז הצלע היא 8. היקף = 4 × 8 = 32.",
+          "difficulty": "easy",
+          "tags": ["geometry", "square"]
+        },
+        {
+          "id": "sample-2025-q-4",
+          "sectionId": "sample-2025-quantitative-1",
+          "number": 4,
+          "type": "word-problem",
+          "stem": "בכיתה יש 30 תלמידים. 40% מהם בנות. כמה בנים יש בכיתה?",
+          "options": [
+            { "label": "א", "text": "12" },
+            { "label": "ב", "text": "18" },
+            { "label": "ג", "text": "20" },
+            { "label": "ד", "text": "22" }
+          ],
+          "correctAnswer": "ב",
+          "explanation": "40% בנות = 12 בנות. לכן 30 - 12 = 18 בנים.",
+          "difficulty": "easy",
+          "tags": ["percentages", "word-problem"]
+        },
+        {
+          "id": "sample-2025-q-5",
+          "sectionId": "sample-2025-quantitative-1",
+          "number": 5,
+          "type": "sequences",
+          "stem": "מהו האיבר הבא בסדרה: 2, 6, 18, 54, ?",
+          "options": [
+            { "label": "א", "text": "108" },
+            { "label": "ב", "text": "162" },
+            { "label": "ג", "text": "180" },
+            { "label": "ד", "text": "216" }
+          ],
+          "correctAnswer": "ב",
+          "explanation": "זוהי סדרה הנדסית עם מנה 3. האיבר הבא: 54 × 3 = 162.",
+          "difficulty": "medium",
+          "tags": ["sequences", "geometric"]
+        }
+      ]
+    },
+    {
+      "id": "sample-2025-verbal-1",
+      "examId": "sample-2025",
+      "type": "verbal",
+      "order": 1,
+      "timeLimitMinutes": 20,
+      "questions": [
+        {
+          "id": "sample-2025-v-1",
+          "sectionId": "sample-2025-verbal-1",
+          "number": 1,
+          "type": "analogy",
+          "stem": "ספר : קריאה = ?",
+          "options": [
+            { "label": "א", "text": "מכונית : נהיגה" },
+            { "label": "ב", "text": "בית : גג" },
+            { "label": "ג", "text": "עץ : יער" },
+            { "label": "ד", "text": "שולחן : כיסא" }
+          ],
+          "correctAnswer": "א",
+          "explanation": "ספר הוא כלי לקריאה, כמו שמכונית היא כלי לנהיגה.",
+          "difficulty": "easy",
+          "tags": ["analogy", "function"]
+        },
+        {
+          "id": "sample-2025-v-2",
+          "sectionId": "sample-2025-verbal-1",
+          "number": 2,
+          "type": "analogy",
+          "stem": "רופא : מרפאה = ?",
+          "options": [
+            { "label": "א", "text": "מורה : לימוד" },
+            { "label": "ב", "text": "שוטר : משטרה" },
+            { "label": "ג", "text": "שופט : חוק" },
+            { "label": "ד", "text": "נהג : מכונית" }
+          ],
+          "correctAnswer": "ב",
+          "explanation": "רופא עובד במרפאה, כמו ששוטר עובד במשטרה.",
+          "difficulty": "easy",
+          "tags": ["analogy", "workplace"]
+        },
+        {
+          "id": "sample-2025-v-3",
+          "sectionId": "sample-2025-verbal-1",
+          "number": 3,
+          "type": "sentence-completion",
+          "stem": "למרות הקשיים הרבים, הוא לא _____ והמשיך להתקדם לעבר המטרה.",
+          "options": [
+            { "label": "א", "text": "הצליח" },
+            { "label": "ב", "text": "התייאש" },
+            { "label": "ג", "text": "התקדם" },
+            { "label": "ד", "text": "הגיע" }
+          ],
+          "correctAnswer": "ב",
+          "explanation": "\"למרות\" מציין ניגוד. ההיגיון: למרות הקשיים לא התייאש = המשיך.",
+          "difficulty": "easy",
+          "tags": ["sentence-completion", "contrast"]
+        },
+        {
+          "id": "sample-2025-v-4",
+          "sectionId": "sample-2025-verbal-1",
+          "number": 4,
+          "type": "sentence-completion",
+          "stem": "המדען _____ את התאוריה לאחר שגילה נתונים סותרים.",
+          "options": [
+            { "label": "א", "text": "אישר" },
+            { "label": "ב", "text": "פרסם" },
+            { "label": "ג", "text": "דחה" },
+            { "label": "ד", "text": "הרחיב" }
+          ],
+          "correctAnswer": "ג",
+          "explanation": "נתונים סותרים מובילים לדחיית תאוריה, לא לאישורה.",
+          "difficulty": "medium",
+          "tags": ["sentence-completion", "logic"]
+        },
+        {
+          "id": "sample-2025-v-5",
+          "sectionId": "sample-2025-verbal-1",
+          "number": 5,
+          "type": "logic",
+          "stem": "כל החתולים הם חיות. כל החיות צריכות מזון. מה בהכרח נכון?",
+          "options": [
+            { "label": "א", "text": "כל החיות הן חתולים" },
+            { "label": "ב", "text": "חלק מהחתולים לא צריכים מזון" },
+            { "label": "ג", "text": "כל החתולים צריכים מזון" },
+            { "label": "ד", "text": "רק חתולים צריכים מזון" }
+          ],
+          "correctAnswer": "ג",
+          "explanation": "אם כל החתולים הם חיות, וכל החיות צריכות מזון, אז כל החתולים צריכים מזון.",
+          "difficulty": "medium",
+          "tags": ["logic", "syllogism"]
+        }
+      ]
+    },
+    {
+      "id": "sample-2025-english-1",
+      "examId": "sample-2025",
+      "type": "english",
+      "order": 1,
+      "timeLimitMinutes": 30,
+      "questions": [
+        {
+          "id": "sample-2025-e-1",
+          "sectionId": "sample-2025-english-1",
+          "number": 1,
+          "type": "sentence-completion-english",
+          "stem": "Despite the heavy rain, the marathon runners _____ to complete the race.",
+          "options": [
+            { "label": "A", "text": "managed" },
+            { "label": "B", "text": "refused" },
+            { "label": "C", "text": "forgot" },
+            { "label": "D", "text": "avoided" }
+          ],
+          "correctAnswer": "A",
+          "explanation": "\"Despite\" indicates contrast - they succeeded in completing the race despite difficulties.",
+          "difficulty": "easy",
+          "tags": ["vocabulary", "contrast"]
+        },
+        {
+          "id": "sample-2025-e-2",
+          "sectionId": "sample-2025-english-1",
+          "number": 2,
+          "type": "sentence-completion-english",
+          "stem": "The scientist's _____ discovery revolutionized the field of medicine.",
+          "options": [
+            { "label": "A", "text": "trivial" },
+            { "label": "B", "text": "groundbreaking" },
+            { "label": "C", "text": "ordinary" },
+            { "label": "D", "text": "minor" }
+          ],
+          "correctAnswer": "B",
+          "explanation": "\"Revolutionized\" suggests something major - \"groundbreaking\" fits best.",
+          "difficulty": "easy",
+          "tags": ["vocabulary", "collocation"]
+        },
+        {
+          "id": "sample-2025-e-3",
+          "sectionId": "sample-2025-english-1",
+          "number": 3,
+          "type": "restatement",
+          "stem": "The teacher was very pleased with the students' progress.",
+          "options": [
+            { "label": "A", "text": "The students made no progress at all." },
+            { "label": "B", "text": "The teacher was satisfied with how well the students improved." },
+            { "label": "C", "text": "The students were unhappy with the teacher." },
+            { "label": "D", "text": "The teacher expected better results from the students." }
+          ],
+          "correctAnswer": "B",
+          "explanation": "\"Very pleased\" = \"satisfied\", \"progress\" = \"improved\".",
+          "difficulty": "easy",
+          "tags": ["restatement", "paraphrase"]
+        },
+        {
+          "id": "sample-2025-e-4",
+          "sectionId": "sample-2025-english-1",
+          "number": 4,
+          "type": "restatement",
+          "stem": "It is unlikely that the project will be finished on time.",
+          "options": [
+            { "label": "A", "text": "The project will definitely be completed on schedule." },
+            { "label": "B", "text": "The project might be finished ahead of schedule." },
+            { "label": "C", "text": "The project will probably not meet its deadline." },
+            { "label": "D", "text": "The project has already been completed." }
+          ],
+          "correctAnswer": "C",
+          "explanation": "\"Unlikely\" = \"probably not\", \"finished on time\" = \"meet its deadline\".",
+          "difficulty": "medium",
+          "tags": ["restatement", "probability"]
+        },
+        {
+          "id": "sample-2025-e-5",
+          "sectionId": "sample-2025-english-1",
+          "number": 5,
+          "type": "sentence-completion-english",
+          "stem": "The weather forecast _____ that it would rain, but the day turned out to be sunny.",
+          "options": [
+            { "label": "A", "text": "confirmed" },
+            { "label": "B", "text": "predicted" },
+            { "label": "C", "text": "guaranteed" },
+            { "label": "D", "text": "proved" }
+          ],
+          "correctAnswer": "B",
+          "explanation": "Forecasts \"predict\" - they don't confirm or guarantee. \"But\" shows the prediction was wrong.",
+          "difficulty": "medium",
+          "tags": ["vocabulary", "collocation"]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "source": "manual-sample",
+    "processedAt": "2025-01-20T00:00:00.000Z"
+  }
+}

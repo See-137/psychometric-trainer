@@ -1,0 +1,46 @@
+{
+  "CallerReference": "psychometric-trainer-2025-01-20",
+  "Comment": "Psychometric Trainer PWA - Production",
+  "DefaultCacheBehavior": {
+    "TargetOriginId": "S3-psychometric-trainer",
+    "ViewerProtocolPolicy": "redirect-to-https",
+    "AllowedMethods": {
+      "Quantity": 2,
+      "Items": ["GET", "HEAD"],
+      "CachedMethods": {
+        "Quantity": 2,
+        "Items": ["GET", "HEAD"]
+      }
+    },
+    "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+    "Compress": true
+  },
+  "Origins": {
+    "Quantity": 1,
+    "Items": [
+      {
+        "Id": "S3-psychometric-trainer",
+        "DomainName": "psychometric-trainer-app-383349724213.s3.eu-central-1.amazonaws.com",
+        "S3OriginConfig": {
+          "OriginAccessIdentity": ""
+        },
+        "OriginAccessControlId": "E3LUKPJU7E49IV"
+      }
+    ]
+  },
+  "Enabled": true,
+  "DefaultRootObject": "index.html",
+  "CustomErrorResponses": {
+    "Quantity": 1,
+    "Items": [
+      {
+        "ErrorCode": 404,
+        "ResponsePagePath": "/index.html",
+        "ResponseCode": "200",
+        "ErrorCachingMinTTL": 0
+      }
+    ]
+  },
+  "HttpVersion": "http2and3",
+  "PriceClass": "PriceClass_100"
+}

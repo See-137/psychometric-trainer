@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" fill="none">
+  <!-- Background -->
+  <rect width="192" height="192" rx="24" fill="#1e40af"/>
+  
+  <!-- Book icon -->
+  <g transform="translate(32, 40)">
+    <!-- Book pages -->
+    <path d="M64 16C48 8 28 8 8 16v96c20-8 40-8 56 0V16z" fill="white" opacity="0.9"/>
+    <path d="M64 16C80 8 100 8 120 16v96c-20-8-40-8-56 0V16z" fill="white" opacity="0.7"/>
+    
+    <!-- Spine -->
+    <line x1="64" y1="16" x2="64" y2="112" stroke="white" stroke-width="4" opacity="0.5"/>
+    
+    <!-- Brain symbol on book -->
+    <circle cx="64" cy="56" r="20" fill="#1e40af" opacity="0.8"/>
+    <path d="M54 56c0-6 4-10 10-10s10 4 10 10-4 10-10 10" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M59 46c-3 2-5 5-5 10 0 3 1 6 3 8" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M69 46c3 2 5 5 5 10 0 3-1 6-3 8" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Hebrew letter פ (Psy) -->
+  <text x="96" y="170" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle" opacity="0.8">פסיכומטרי</text>
+</svg>
