@@ -5,24 +5,24 @@
       "name": "מבחן אביב 2025",
       "nameEn": "Spring 2025 Exam",
       "totalQuestions": 130,
-      "fullTextQuestions": 127
+      "fullTextQuestions": 130
     },
     {
       "id": "summer-2025",
       "name": "מבחן קיץ 2025",
       "nameEn": "Summer 2025 Exam",
       "totalQuestions": 130,
-      "fullTextQuestions": 125
+      "fullTextQuestions": 130
     },
     {
       "id": "fall-2025",
       "name": "מבחן סתיו 2025",
       "nameEn": "Fall 2025 Exam",
       "totalQuestions": 130,
-      "fullTextQuestions": 128
+      "fullTextQuestions": 129
     }
   ],
   "totalQuestions": 390,
-  "fullTextQuestions": 380,
-  "lastUpdated": "2026-01-20T00:31:06.833Z"
+  "fullTextQuestions": 389,
+  "lastUpdated": "2026-01-20T01:09:23.212Z"
 }
