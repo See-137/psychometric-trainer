@@ -39,5 +39,20 @@ coverage/
 # PDF source files
 scripts/*.pdf
 
+# Temporary files and debugging scripts
+*.tmp
+*.temp
+*-temp.*
+*-debug.*
+temp-*
+debug-*
+scripts/temp/
+scripts/debug/
+scripts/*-temp.*
+scripts/*-debug.*
+scripts/*.cjs
+scripts/*.backup
+scripts/*.test.*
+
 # Sentry
 .sentryclirc

@@ -13,7 +13,8 @@
     "test:coverage": "vitest run --coverage",
     "deploy": "powershell -ExecutionPolicy Bypass -File ./deploy.ps1 -InvalidateCache",
     "deploy:quick": "powershell -ExecutionPolicy Bypass -File ./deploy.ps1 -SkipBuild",
-    "reconstruct-questions": "node scripts/reconstruct-questions.js"
+    "reconstruct-questions": "node scripts/reconstruct-questions.js",
+    "clean:temp": "powershell -Command \"Remove-Item 'scripts/temp/*' -Recurse -Force -ErrorAction SilentlyContinue; Write-Host 'Temporary files cleaned'\""
   },
   "dependencies": {
     "@sentry/react": "^8.55.0",
