@@ -29,8 +29,8 @@ A Progressive Web App (PWA) for practicing the Israeli Psychometric Entrance Tes
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/psychometric-trainer.git
-cd psychometric-trainer/app
+git clone https://github.com/See-137/psychometric-trainer.git
+cd psychometric-trainer
 
 # Install dependencies
 npm install
@@ -102,7 +102,7 @@ aws cloudfront create-invalidation --distribution-id YOUR_DIST_ID --paths "/*"
 ## 📁 Project Structure
 
 ```
-app/
+psychometric-trainer/
 ├── public/
 │   └── content/
 │       └── exams/          # Parsed exam JSON files
@@ -116,7 +116,11 @@ app/
 │   ├── types/              # TypeScript types
 │   └── test/               # Test files
 ├── scripts/                # PDF parsing scripts
-└── infra/                  # AWS infrastructure configs
+├── infra/                  # AWS infrastructure configs
+├── content-pipeline/       # Python PDF parsing pipeline
+│   ├── scripts/            # Parser and extraction scripts
+│   └── schemas/            # JSON validation schemas
+└── DEVELOPMENT.md          # Development guide
 ```
 
 ## 🛠️ Tech Stack
