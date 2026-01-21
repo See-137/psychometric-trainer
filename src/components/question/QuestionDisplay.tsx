@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { Question, QuestionType, Option } from '../../types';
+import VisualContentParser from './VisualContentParser';
 
 interface QuestionDisplayProps {
   question: Question;
@@ -173,6 +174,9 @@ export const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
             />
           </div>
         )}
+
+        {/* Visual content parser for mathematical diagrams */}
+        <VisualContentParser content={question.stem} />
 
         {/* Passage (for reading comprehension) */}
         {question.passage && (
