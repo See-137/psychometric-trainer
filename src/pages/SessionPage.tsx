@@ -342,6 +342,29 @@ const SessionPage: React.FC = () => {
             </button>
           </div>
         )}
+
+        {/* Simulation mode: Show centered navigation buttons */}
+        {!isTrainingMode && selectedAnswer && (
+          <div className="mt-6 mb-4 flex justify-center gap-3">
+            {canGoPrevious && (
+              <button
+                type="button"
+                onClick={handlePrevious}
+                className="px-6 py-3 text-primary bg-primary/5 hover:bg-primary/10 rounded-lg transition-colors font-medium border border-primary/20"
+              >
+                הקודמת
+              </button>
+            )}
+            
+            <button
+              type="button"
+              onClick={handleNext}
+              className="px-8 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors shadow-sm"
+            >
+              {currentIndex < totalQuestions - 1 ? 'הבאה' : 'סיום'}
+            </button>
+          </div>
+        )}
       </div>
     </SessionLayout>
   );
