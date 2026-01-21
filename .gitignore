@@ -56,3 +56,7 @@ scripts/*.test.*
 
 # Sentry
 .sentryclirc
+
+# Temporary working directories (duplicates)
+app/
+.claude/

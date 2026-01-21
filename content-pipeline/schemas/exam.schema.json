@@ -1,0 +1,209 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://psychometric-trainer/exam.schema.json",
+  "title": "Psychometric Exam",
+  "description": "Schema for Israeli Psychometric Entrance Test exam data",
+  "type": "object",
+  "required": ["id", "season", "year", "sections"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique exam identifier",
+      "pattern": "^[a-z0-9_-]+$"
+    },
+    "season": {
+      "type": "string",
+      "enum": ["spring", "summer", "fall", "winter"],
+      "description": "Exam season"
+    },
+    "year": {
+      "type": "integer",
+      "minimum": 2000,
+      "maximum": 2100,
+      "description": "Exam year"
+    },
+    "hebrewName": {
+      "type": "string",
+      "description": "Display name in Hebrew"
+    },
+    "sections": {
+      "type": "array",
+      "description": "Exam sections",
+      "items": {
+        "$ref": "#/definitions/Section"
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": "Source PDF filename"
+        },
+        "processedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Processing timestamp"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Section": {
+      "type": "object",
+      "required": ["id", "examId", "type", "order", "questions"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique section identifier"
+        },
+        "examId": {
+          "type": "string",
+          "description": "Parent exam ID"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["quantitative", "verbal", "english"],
+          "description": "Section type"
+        },
+        "order": {
+          "type": "integer",
+          "enum": [1, 2],
+          "description": "Section order within type (first or second)"
+        },
+        "timeLimitMinutes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Time limit in minutes"
+        },
+        "questions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Question"
+          }
+        }
+      }
+    },
+    "Question": {
+      "type": "object",
+      "required": ["id", "sectionId", "number", "stem", "options"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique question identifier"
+        },
+        "sectionId": {
+          "type": "string",
+          "description": "Parent section ID"
+        },
+        "number": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Question number within section"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "algebra",
+            "geometry", 
+            "data-interpretation",
+            "word-problem",
+            "sequences",
+            "analogy",
+            "sentence-completion",
+            "reading-comprehension-hebrew",
+            "logic",
+            "sentence-completion-english",
+            "restatement",
+            "reading-comprehension-english"
+          ],
+          "description": "Question type/category"
+        },
+        "stem": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Question text"
+        },
+        "stemHtml": {
+          "type": "string",
+          "description": "Question text with HTML formatting"
+        },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 4,
+          "items": {
+            "$ref": "#/definitions/Option"
+          }
+        },
+        "correctAnswer": {
+          "type": "string",
+          "description": "Correct option label"
+        },
+        "explanation": {
+          "type": "string",
+          "description": "Solution explanation"
+        },
+        "explanationHtml": {
+          "type": "string",
+          "description": "Solution explanation with HTML formatting"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ImageRef"
+          }
+        },
+        "passage": {
+          "type": "string",
+          "description": "Reading passage for comprehension questions"
+        },
+        "passageId": {
+          "type": "string",
+          "description": "ID for grouping questions sharing same passage"
+        },
+        "difficulty": {
+          "type": "string",
+          "enum": ["easy", "medium", "hard"],
+          "description": "Estimated difficulty level"
+        }
+      }
+    },
+    "Option": {
+      "type": "object",
+      "required": ["label", "text"],
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "Option label (א/ב/ג/ד or A/B/C/D)"
+        },
+        "text": {
+          "type": "string",
+          "description": "Option text"
+        },
+        "textHtml": {
+          "type": "string",
+          "description": "Option text with HTML formatting"
+        }
+      }
+    },
+    "ImageRef": {
+      "type": "object",
+      "required": ["id", "filename"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Image identifier"
+        },
+        "filename": {
+          "type": "string",
+          "description": "Image filename"
+        },
+        "alt": {
+          "type": "string",
+          "description": "Alt text description"
+        }
+      }
+    }
+  }
+}

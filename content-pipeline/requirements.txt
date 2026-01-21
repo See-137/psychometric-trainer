@@ -1,0 +1,16 @@
+# PDF Processing
+pdfplumber>=0.10.0
+PyMuPDF>=1.23.0
+
+# OCR Fallback (for complex Hebrew text)
+pytesseract>=0.3.10
+opencv-python>=4.8.0
+
+# Image Processing
+Pillow>=10.0.0
+
+# Validation
+jsonschema>=4.20.0
+
+# Progress bars for long operations
+tqdm>=4.66.0
