@@ -21,6 +21,71 @@ interface QuestionDisplayProps {
  * Main question display component
  * Handles multiple choice questions with Hebrew RTL support
  */
+/**
+ * Parse Hebrew sentence completion questions that have embedded passages
+ * Pattern: [passage text]... [question starting with "על פי" or similar]
+ */
+function parseHebrewPassageQuestion(stem: string): { passage?: string; question: string } {
+  // Look for Hebrew question indicators that suggest the text before is a passage
+  const questionIndicators = [
+    'על פי העולה מן הכתוב לעיל',
+    'על פי העולה מהפסקה',
+    'על פי הפסקה',
+    'מן הפסקה עולה',
+    'על פי הכתוב',
+    'מהאמור לעיל',
+    'איזו מהטענות הבאות',
+    'איזה מן ההסברים הבאות',
+    'מדבריו של',
+    'איזו מהאפשרויות הבאות'
+  ];
+  
+  // If the stem is short or doesn't contain these patterns, treat as regular question
+  if (stem.length < 200) {
+    return { question: stem };
+  }
+  
+  // Find the question part
+  for (const indicator of questionIndicators) {
+    const indicatorIndex = stem.indexOf(indicator);
+    if (indicatorIndex > 100) { // Ensure there's substantial text before
+      // Split at the sentence containing the indicator
+      const beforeIndicator = stem.substring(0, indicatorIndex).trim();
+      const fromIndicator = stem.substring(indicatorIndex).trim();
+      
+      // Check if this looks like a passage + question pattern
+      if (beforeIndicator.length > 100 && fromIndicator.includes('?')) {
+        return {
+          passage: beforeIndicator,
+          question: fromIndicator
+        };
+      }
+    }
+  }
+  
+  // Look for question mark patterns - often the question is the last sentence
+  const questionMarkIndex = stem.lastIndexOf('?');
+  if (questionMarkIndex > 100 && questionMarkIndex < stem.length - 10) {
+    // Find the start of the sentence with the question mark
+    const beforeQuestion = stem.substring(0, questionMarkIndex + 1);
+    const sentences = beforeQuestion.split('.');
+    
+    if (sentences.length >= 2) {
+      const questionSentence = sentences[sentences.length - 1].trim() + (stem.substring(questionMarkIndex + 1).trim() || '');
+      const passageText = sentences.slice(0, -1).join('.').trim();
+      
+      if (passageText.length > 100 && questionSentence.length > 20) {
+        return {
+          passage: passageText,
+          question: questionSentence
+        };
+      }
+    }
+  }
+  
+  return { question: stem };
+}
+
 export const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
   question,
   selectedAnswer,
@@ -155,14 +220,46 @@ export const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
 
       {/* Question text */}
       <div className="px-6 py-5" dir="auto">
-        <p className="text-lg text-gray-900 leading-relaxed whitespace-pre-wrap" 
-           style={{ 
-             unicodeBidi: 'plaintext', 
-             textAlign: 'start',
-             lineHeight: '1.6'
-           }}>
-          {question.stem}
-        </p>
+        {(() => {
+          // Parse Hebrew sentence completion questions with embedded passages
+          const questionData = question as any; // Type assertion for additional properties
+          const isHebrewVerbal = questionData.language === 'he' && (
+            question.type?.includes('sentence-completion') ||
+            question.type?.includes('reading-comprehension') ||
+            questionData.sectionType === 'verbal'
+          );
+          const parsed = isHebrewVerbal ? parseHebrewPassageQuestion(question.stem) : { question: question.stem };
+          const hasEmbeddedPassage = parsed.passage && !question.passage;
+          
+          return (
+            <>
+              {/* Embedded passage from Hebrew sentence completion */}
+              {hasEmbeddedPassage && (
+                <div className="mb-4 p-4 bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg border border-amber-200">
+                  <div className="text-sm font-medium text-amber-700 mb-2 text-center">קטע לקריאה</div>
+                  <p className="text-base text-gray-800 leading-relaxed whitespace-pre-wrap" 
+                     style={{ 
+                       unicodeBidi: 'plaintext', 
+                       textAlign: 'start',
+                       lineHeight: '1.7'
+                     }}>
+                    {parsed.passage}
+                  </p>
+                </div>
+              )}
+              
+              {/* Question text */}
+              <p className="text-lg text-gray-900 leading-relaxed whitespace-pre-wrap" 
+                 style={{ 
+                   unicodeBidi: 'plaintext', 
+                   textAlign: 'start',
+                   lineHeight: '1.6'
+                 }}>
+                {parsed.question}
+              </p>
+            </>
+          );
+        })()}
 
         {/* Media content (if any) */}
         {question.images && question.images.length > 0 && (
@@ -178,7 +275,7 @@ export const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
         {/* Visual content parser for mathematical diagrams */}
         <VisualContentParser content={question.stem} />
 
-        {/* Passage (for reading comprehension) */}
+        {/* Regular passage (for reading comprehension with separate passage field) */}
         {question.passage && (
           <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200" dir="auto">
             <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap" 
